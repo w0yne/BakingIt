@@ -5,4 +5,5 @@
     <string name="next">Next</string>
 
     <string name="screen_type" translatable="false">phone</string>
+    <string name="error_no_data">No data</string>
 </resources>

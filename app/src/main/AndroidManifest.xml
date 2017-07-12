@@ -25,6 +25,24 @@
         <activity
             android:name=".RecipeStepDetailActivity"
             android:configChanges="orientation|screenSize"/>
+        <activity android:name=".IngredientWidgetConfigure">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+            </intent-filter>
+        </activity>
+
+        <receiver android:name="IngredientWidgetProvider" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider"
+                       android:resource="@xml/ingredient_widget_info" />
+        </receiver>
+
+        <service android:name=".WidgetRemoteViewsService"
+                 android:enabled="true"
+                 android:exported="false"
+                 android:permission="android.permission.BIND_REMOTEVIEWS"/>
     </application>
 
 </manifest>
