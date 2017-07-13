@@ -1,5 +1,7 @@
 package com.w0yne.android.bakingit.data;
 
+import android.support.annotation.VisibleForTesting;
+
 import com.google.gson.annotations.SerializedName;
 
 import io.realm.RealmObject;
@@ -24,5 +26,25 @@ public class Step extends RealmObject {
 
     public void normalizedData(int recipeId) {
         uid = recipeId * 100 + id;
+    }
+
+    public int getUid() {
+        return uid;
+    }
+
+    public String getShortDescription() {
+        return shortDescription;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getVideoURL() {
+        return videoURL;
+    }
+
+    public String getThumbnailURL() {
+        return thumbnailURL;
     }
 }

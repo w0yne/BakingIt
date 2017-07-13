@@ -20,4 +20,20 @@ public class Ingredient extends RealmObject {
     public void normalizedData(int recipeId, int index) {
         uid = recipeId * 100 + index;
     }
+
+    public int getUid() {
+        return uid;
+    }
+
+    public float getQuantity() {
+        return quantity;
+    }
+
+    public String getMeasure() {
+        return measure;
+    }
+
+    public String getIngredient() {
+        return ingredient;
+    }
 }

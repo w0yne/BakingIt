@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -27,7 +28,8 @@ public class RecipeStepListActivity extends AppCompatActivity {
      */
     private boolean mTwoPane;
 
-    private Recipe mRecipe;
+    @VisibleForTesting
+    Recipe mRecipe;
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;

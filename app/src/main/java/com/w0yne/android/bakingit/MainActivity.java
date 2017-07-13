@@ -3,6 +3,7 @@ package com.w0yne.android.bakingit;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
                         .putExtra(Intents.EXTRA_RECIPE_ID, viewHolder.data.uid)));
         mRecipeCardsRcv.setAdapter(mRecipeListAdapter);
 
-        mApiService = NetworkServiceGenerator.createService(ApiService.class, "http://go.udacity.com/");
+        mApiService = NetworkServiceGenerator.createService(ApiService.class, NetworkServiceGenerator.getBaseUrl());
 
         mRefreshLayout.setRefreshing(true);
         mRefreshLayout.setOnRefreshListener(this::fetchData);

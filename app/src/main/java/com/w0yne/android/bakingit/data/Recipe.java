@@ -1,5 +1,7 @@
 package com.w0yne.android.bakingit.data;
 
+import android.support.annotation.VisibleForTesting;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -57,5 +59,29 @@ public class Recipe extends RealmObject {
                     .append(ingredient.measure).append("\n");
         }
         return sb.deleteCharAt(sb.length() - 1).toString();
+    }
+
+    public int getUid() {
+        return uid;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getServings() {
+        return servings;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public RealmList<Ingredient> getIngredientList() {
+        return ingredientList;
+    }
+
+    public RealmList<Step> getStepList() {
+        return stepList;
     }
 }
