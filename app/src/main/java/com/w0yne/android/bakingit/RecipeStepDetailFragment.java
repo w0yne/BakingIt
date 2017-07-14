@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -32,6 +33,7 @@ import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.squareup.picasso.Picasso;
 import com.w0yne.android.bakingit.data.Step;
 
 import butterknife.BindView;
@@ -44,6 +46,8 @@ public class RecipeStepDetailFragment extends Fragment implements ExoPlayer.Even
 
     private static final String TAG = RecipeStepDetailFragment.class.getSimpleName();
 
+    @BindView(R.id.recipe_step_thumbnail)
+    ImageView mThumbnail;
     @BindView(R.id.recipe_step_video_player)
     SimpleExoPlayerView mPlayerView;
     @BindView(R.id.recipe_step_instruction)
@@ -81,10 +85,12 @@ public class RecipeStepDetailFragment extends Fragment implements ExoPlayer.Even
 
         mInstructionTxv.setText(mStep.description);
 
-        if (TextUtils.isEmpty(mStep.videoURL)) {
-            mPlayerView.setVisibility(View.GONE);
+        if (!TextUtils.isEmpty(mStep.thumbnailURL)) {
+            Picasso.with(getActivity())
+                    .load(mStep.thumbnailURL)
+                    .into(mThumbnail);
         } else {
-            setUpPlayer();
+            mThumbnail.setVisibility(View.GONE);
         }
     }
 
@@ -111,9 +117,13 @@ public class RecipeStepDetailFragment extends Fragment implements ExoPlayer.Even
     }
 
     private void setUpPlayer() {
-        initializeMediaSession();
+        if (TextUtils.isEmpty(mStep.videoURL)) {
+            mPlayerView.setVisibility(View.GONE);
+        } else {
+            initializeMediaSession();
 
-        initializePlayer(Uri.parse(mStep.videoURL));
+            initializePlayer(Uri.parse(mStep.videoURL));
+        }
     }
 
     private void initializeMediaSession() {
@@ -158,9 +168,7 @@ public class RecipeStepDetailFragment extends Fragment implements ExoPlayer.Even
         }
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    private void releasePlayer() {
         if (mExoPlayer != null) {
             mExoPlayer.stop();
             mExoPlayer.release();
@@ -169,6 +177,38 @@ public class RecipeStepDetailFragment extends Fragment implements ExoPlayer.Even
         if (mMediaSession != null) {
             mMediaSession.setActive(false);
             mMediaSession = null;
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (Util.SDK_INT > 23) {
+            setUpPlayer();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if ((Util.SDK_INT <= 23)) {
+            setUpPlayer();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (Util.SDK_INT <= 23) {
+            releasePlayer();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (Util.SDK_INT > 23) {
+            releasePlayer();
         }
     }
 
@@ -189,10 +229,10 @@ public class RecipeStepDetailFragment extends Fragment implements ExoPlayer.Even
 
     @Override
     public void onPlayerStateChanged(final boolean playWhenReady, final int playbackState) {
-        if((playbackState == ExoPlayer.STATE_READY) && playWhenReady){
+        if ((playbackState == ExoPlayer.STATE_READY) && playWhenReady) {
             mStateBuilder.setState(PlaybackStateCompat.STATE_PLAYING,
                     mExoPlayer.getCurrentPosition(), 1f);
-        } else if((playbackState == ExoPlayer.STATE_READY)){
+        } else if ((playbackState == ExoPlayer.STATE_READY)) {
             mStateBuilder.setState(PlaybackStateCompat.STATE_PAUSED,
                     mExoPlayer.getCurrentPosition(), 1f);
         }

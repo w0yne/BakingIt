@@ -10,6 +10,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.w0yne.android.bakingit.data.Recipe;
 import com.w0yne.android.bakingit.net.ApiService;
@@ -57,9 +58,12 @@ public class MainActivity extends AppCompatActivity {
 
         mApiService = NetworkServiceGenerator.createService(ApiService.class, NetworkServiceGenerator.getBaseUrl());
 
-        mRefreshLayout.setRefreshing(true);
         mRefreshLayout.setOnRefreshListener(this::fetchData);
-        fetchData();
+
+        if (Utility.isNetworkConnected(this)) {
+            mRefreshLayout.setRefreshing(true);
+            fetchData();
+        }
     }
 
     private void fetchData() {
@@ -88,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(final Call<List<Recipe>> call, final Throwable t) {
                         Log.i("Error", t.getLocalizedMessage());
+                        Toast.makeText(MainActivity.this, R.string.error_response, Toast.LENGTH_LONG).show();
                     }
                 });
     }

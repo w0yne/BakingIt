@@ -8,6 +8,12 @@
     android:orientation="vertical"
     tools:context="com.w0yne.android.bakingit.RecipeStepDetailFragment">
 
+    <ImageView
+        android:id="@+id/recipe_step_thumbnail"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
     <com.google.android.exoplayer2.ui.SimpleExoPlayerView
         android:id="@+id/recipe_step_video_player"
         android:layout_width="match_parent"

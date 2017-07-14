@@ -6,4 +6,5 @@
 
     <string name="screen_type" translatable="false">phone</string>
     <string name="error_no_data">No data</string>
+    <string name="error_response">Fetch data failed, try again.</string>
 </resources>

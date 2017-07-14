@@ -3,6 +3,7 @@
           package="com.w0yne.android.bakingit">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
         android:name=".MyApp"
@@ -31,18 +32,20 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name="IngredientWidgetProvider" >
+        <receiver android:name="IngredientWidgetProvider">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
-            <meta-data android:name="android.appwidget.provider"
-                       android:resource="@xml/ingredient_widget_info" />
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/ingredient_widget_info"/>
         </receiver>
 
-        <service android:name=".WidgetRemoteViewsService"
-                 android:enabled="true"
-                 android:exported="false"
-                 android:permission="android.permission.BIND_REMOTEVIEWS"/>
+        <service
+            android:name=".WidgetRemoteViewsService"
+            android:enabled="true"
+            android:exported="false"
+            android:permission="android.permission.BIND_REMOTEVIEWS"/>
     </application>
 
 </manifest>

@@ -2,11 +2,14 @@ package com.w0yne.android.bakingit;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.w0yne.android.bakingit.data.Recipe;
 
 import java.util.ArrayList;
@@ -50,6 +53,11 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Vi
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         Recipe recipe = mRecipes.get(position);
         holder.data = recipe;
+        if (!TextUtils.isEmpty(recipe.image)) {
+            Picasso.with(mContext)
+                    .load(recipe.image)
+                    .into(holder.recipeImage);
+        }
         holder.recipeNameTxv.setText(recipe.name);
         holder.recipeNameTxv.setOnClickListener(v -> mOnItemClickListener.onItemClick(holder, position));
     }
@@ -61,6 +69,8 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Vi
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
+        @BindView(R.id.recipe_image)
+        ImageView recipeImage;
         @BindView(R.id.recipe_name_txv)
         TextView recipeNameTxv;
         public Recipe data;
